@@ -14,7 +14,7 @@ export function RuleEditor({ extensions, existing, onSave, onCancel }: RuleEdito
   const [granularity, setGranularity] = useState<'hostname' | 'registrable'>(
     existing ? (existing.exact ? 'hostname' : 'registrable') : 'registrable',
   );
-  const [selected, setSelected] = useState<Set<string>>(new Set(existing?.extensionIds ?? []));
+  const [selected, setSelected] = useState<Set<string>>(() => new Set(existing?.extensionIds ?? []));
 
   const site = useMemo(() => (existing ? null : parseDomainInput(domainInput)), [domainInput, existing]);
   const isEditingExisting = !!existing;
@@ -48,8 +48,11 @@ export function RuleEditor({ extensions, existing, onSave, onCancel }: RuleEdito
 
       {!isEditingExisting && (
         <div className="mb-3">
-          <label className="mb-1 block text-xs font-medium text-zinc-400">Domain or hostname</label>
+          <label htmlFor="rule-domain-input" className="mb-1 block text-xs font-medium text-zinc-400">
+            Domain or hostname
+          </label>
           <input
+            id="rule-domain-input"
             value={domainInput}
             onChange={(e) => setDomainInput(e.target.value)}
             placeholder="example.com or mail.example.com"

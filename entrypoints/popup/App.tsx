@@ -157,6 +157,8 @@ export default function App() {
     return extensions.filter((e) => e.name.toLowerCase().includes(q));
   }, [extensions, query]);
 
+  const alwaysOnSet = useMemo(() => new Set(alwaysOnIds), [alwaysOnIds]);
+
   const openOptions = useCallback(() => {
     browser.runtime.openOptionsPage();
   }, []);
@@ -213,7 +215,7 @@ export default function App() {
               </p>
             )}
             {filtered.map((ext) => {
-              const pinned = alwaysOnIds.includes(ext.id);
+              const pinned = alwaysOnSet.has(ext.id);
               return (
                 <ExtensionRow
                   key={ext.id}

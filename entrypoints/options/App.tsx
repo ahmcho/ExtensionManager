@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ExtensionRow } from '@/components/ExtensionRow';
 import { Toggle } from '@/components/Toggle';
 import { applyDiff, listManageableExtensions } from '@/lib/management';
@@ -66,6 +66,7 @@ export default function App() {
   }, []);
 
   const ruleList = Object.values(rules).sort((a, b) => a.key.localeCompare(b.key));
+  const alwaysOnSet = useMemo(() => new Set(alwaysOnIds), [alwaysOnIds]);
 
   return (
     <div className="mx-auto min-h-screen max-w-2xl bg-zinc-950 px-6 py-8 text-zinc-100">
@@ -89,7 +90,7 @@ export default function App() {
             </p>
             <div className="divide-y divide-zinc-800">
               {extensions.map((ext) => {
-                const pinned = alwaysOnIds.includes(ext.id);
+                const pinned = alwaysOnSet.has(ext.id);
                 return (
                   <ExtensionRow
                     key={ext.id}

@@ -7,7 +7,7 @@ type IconInfo = Browser.management.IconInfo;
 function pickIcon(icons: IconInfo[] | undefined): string | undefined {
   if (!icons || icons.length === 0) return undefined;
   // Prefer the smallest icon >= 32px (crisp at popup-list size); fall back to the largest available.
-  const sorted = [...icons].sort((a, b) => a.size - b.size);
+  const sorted = icons.toSorted((a, b) => a.size - b.size);
   return (sorted.find((icon) => icon.size >= 32) ?? sorted[sorted.length - 1]).url;
 }
 
@@ -56,16 +56,22 @@ export interface ApplyResult {
  * extension doesn't block the rest of the diff from applying.
  */
 export async function applyDiff(diff: DiffEntry[]): Promise<ApplyResult> {
+  const results = await Promise.all(
+    diff.map(async (entry) => {
+      try {
+        await browser.management.setEnabled(entry.id, entry.to);
+        return { ok: true as const, entry };
+      } catch (err) {
+        return { ok: false as const, entry, error: err instanceof Error ? err.message : String(err) };
+      }
+    }),
+  );
+
   const applied: DiffEntry[] = [];
   const failed: ApplyResult['failed'] = [];
-
-  for (const entry of diff) {
-    try {
-      await browser.management.setEnabled(entry.id, entry.to);
-      applied.push(entry);
-    } catch (err) {
-      failed.push({ entry, error: err instanceof Error ? err.message : String(err) });
-    }
+  for (const result of results) {
+    if (result.ok) applied.push(result.entry);
+    else failed.push({ entry: result.entry, error: result.error });
   }
 
   return { applied, failed };
