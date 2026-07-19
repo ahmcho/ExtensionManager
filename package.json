@@ -3,6 +3,7 @@
   "description": "Per-site extension enable/disable manager for Chromium browsers",
   "private": true,
   "version": "0.1.0",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "wxt",
@@ -23,10 +24,12 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@webext-core/fake-browser": "^1.5.2",
     "@wxt-dev/module-react": "^1.1.5",
+    "happy-dom": "^20.11.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
     "vitest": "^4.1.10",

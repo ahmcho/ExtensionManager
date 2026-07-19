@@ -1,5 +1,7 @@
 # Extension Manager
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+
 A browser extension that keeps *your other extensions* tidy on a per-site
 basis. Tell it what should be enabled on a site — say, only your ad blocker
 and password manager on your banking site — and it keeps everything else
@@ -72,3 +74,7 @@ npm run build        # production build -> .output/chrome-mv3
 ```
 
 Contributions welcome — open an issue or a PR.
+
+## License
+
+[MIT](./LICENSE)
